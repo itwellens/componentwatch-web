@@ -5,10 +5,11 @@ import { getSFFBuilds, getSiteStats } from '@/lib/api'
 export const revalidate = 300 // ISR: regenerate every 5 minutes
 
 export default async function HomePage() {
-  const [stats, { builds: featured }] = await Promise.all([
+  const [stats, featuredResult] = await Promise.all([
     getSiteStats(),
-    getSFFBuilds({ has_benchmarks: true, limit: 6 }),
+    getSFFBuilds({ has_benchmarks: true, limit: 6 }).catch(() => ({ builds: [], total: 0 })),
   ])
+  const featured = featuredResult.builds
 
   return (
     <>

@@ -14,10 +14,14 @@ function parseSlug(slug: string): number | null {
 }
 
 export async function generateStaticParams() {
-  const cases = await getSFFCases()
-  return cases.map(c => ({
-    slug: `${c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${c.id}`,
-  }))
+  try {
+    const cases = await getSFFCases()
+    return cases.map(c => ({
+      slug: `${c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${c.id}`,
+    }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

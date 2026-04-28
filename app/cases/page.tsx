@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function CasesPage() {
-  const cases = await getSFFCases()
+  const cases = await getSFFCases().catch(() => [] as Awaited<ReturnType<typeof getSFFCases>>)
 
   // Sort: most builds first, then alphabetical
   const sorted = [...cases].sort((a, b) =>

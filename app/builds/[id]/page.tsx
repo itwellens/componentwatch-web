@@ -13,10 +13,15 @@ const BENCHMARK_LABELS: Record<string, string> = {
   furmark:       'Furmark',
 }
 
-// Pre-generate the first 50 build pages at build time
+// Pre-generate the first 50 build pages at build time.
+// Returns empty on API failure — pages generate on first request via ISR instead.
 export async function generateStaticParams() {
-  const { builds } = await getSFFBuilds({ limit: 50 })
-  return builds.map(b => ({ id: String(b.id) }))
+  try {
+    const { builds } = await getSFFBuilds({ limit: 50 })
+    return builds.map(b => ({ id: String(b.id) }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
