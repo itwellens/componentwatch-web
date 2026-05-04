@@ -9,7 +9,6 @@ export const metadata: Metadata = {
     'Browse 235+ real small-form-factor PC builds with verified Cinebench, Heaven, and Furmark benchmarks, thermal data, and live component prices.',
 }
 
-export const runtime = 'edge'
 export const revalidate = 300
 
 interface Props {

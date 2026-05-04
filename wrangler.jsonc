@@ -1,8 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "componentwatch-web",
-  "compatibility_date": "2026-04-28",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": ".vercel/output/static",
-  "not_found_handling": "single-page-application"
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/sign-in/[[...sign-in]]/page": "/sign-in/[[...sign-in]]",
+  "/builds/page": "/builds",
+  "/cases/page": "/cases",
+  "/page": "/",
+  "/ai-builds/page": "/ai-builds",
+  "/compare/page": "/compare",
+  "/cases/[slug]/page": "/cases/[slug]",
+  "/builds/[id]/page": "/builds/[id]",
+  "/submit/page": "/submit"
+}
