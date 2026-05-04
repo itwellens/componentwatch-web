@@ -2,12 +2,12 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/sign-in/[[...sign-in]]/page": "app/sign-in/[[...sign-in]]/page.js",
-  "/builds/page": "app/builds/page.js",
-  "/cases/page": "app/cases/page.js",
-  "/page": "app/page.js",
   "/ai-builds/page": "app/ai-builds/page.js",
-  "/compare/page": "app/compare/page.js",
+  "/cases/page": "app/cases/page.js",
+  "/builds/page": "app/builds/page.js",
   "/cases/[slug]/page": "app/cases/[slug]/page.js",
-  "/builds/[id]/page": "app/builds/[id]/page.js",
-  "/submit/page": "app/submit/page.js"
+  "/page": "app/page.js",
+  "/compare/page": "app/compare/page.js",
+  "/submit/page": "app/submit/page.js",
+  "/builds/[id]/page": "app/builds/[id]/page.js"
 }

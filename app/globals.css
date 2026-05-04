@@ -5,9 +5,34 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
 }
 
 body {
-  background: #f5f5f7;
-  color: #1d1d1f;
+  background: #08080f;
+  color: #e8e8f4;
+}
+
+::selection {
+  background: rgba(77, 142, 240, 0.28);
+  color: #e8e8f4;
+}
+
+/* Thin dark scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f1f33;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2e2e4a;
 }

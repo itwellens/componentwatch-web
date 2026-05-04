@@ -15,25 +15,24 @@ const config: Config = {
       },
       colors: {
         ink: {
-          DEFAULT: '#1d1d1f',
-          muted:   '#6e6e73',
-          faint:   '#86868b',
+          DEFAULT: '#e8e8f4',
+          muted:   '#7878a0',
+          faint:   '#44445e',
         },
         surface: {
-          DEFAULT: '#ffffff',
-          alt:     '#f5f5f7',
+          DEFAULT: '#0f0f1a',
+          alt:     '#191929',
         },
-        line:   '#d2d2d7',
+        line:   '#1f1f33',
         accent: {
-          DEFAULT: '#0071e3',
-          hover:   '#0077ed',
-          light:   '#e8f0fb',
+          DEFAULT: '#4d8ef0',
+          hover:   '#60a5fa',
+          light:   '#0c1b3d',
         },
         sff: {
-          // Brand accent for SFF-specific UI
-          green:  '#00c48c',
-          amber:  '#f5a623',
-          red:    '#ff3b30',
+          green:  '#34d399',
+          amber:  '#fbbf24',
+          red:    '#f87171',
         },
       },
       maxWidth: {
@@ -41,7 +40,7 @@ const config: Config = {
         prose:   '720px',
       },
       borderRadius: {
-        xl: '1rem',
+        xl:  '1rem',
         '2xl': '1.25rem',
       },
     },

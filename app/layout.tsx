@@ -6,11 +6,11 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'ComponentWatch — SFF PC Build Library',
+    default: 'ComponentWatch — PC Price Tracker & SFF Build Library',
     template: '%s | ComponentWatch',
   },
   description:
-    'Community-verified benchmarks and real-world data for small-form-factor PC builders. Browse 235+ SFF builds with Cinebench, Heaven, and Furmark results.',
+    'Track PC component prices across Newegg, Amazon, Best Buy, and eBay in real-time. Browse community-verified SFF builds with real benchmarks and thermal data.',
   openGraph: {
     siteName: 'ComponentWatch',
     type: 'website',
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="min-h-screen bg-surface-alt text-ink flex flex-col">
+        <body className="min-h-screen text-ink flex flex-col">
           <Nav />
           <main className="flex-1">{children}</main>
           <Footer />

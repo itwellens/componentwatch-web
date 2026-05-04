@@ -2,12 +2,12 @@
   "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
   "/sign-in/[[...sign-in]]/page": "/sign-in/[[...sign-in]]",
-  "/builds/page": "/builds",
-  "/cases/page": "/cases",
-  "/page": "/",
   "/ai-builds/page": "/ai-builds",
-  "/compare/page": "/compare",
+  "/cases/page": "/cases",
+  "/builds/page": "/builds",
   "/cases/[slug]/page": "/cases/[slug]",
-  "/builds/[id]/page": "/builds/[id]",
-  "/submit/page": "/submit"
+  "/page": "/",
+  "/compare/page": "/compare",
+  "/submit/page": "/submit",
+  "/builds/[id]/page": "/builds/[id]"
 }
