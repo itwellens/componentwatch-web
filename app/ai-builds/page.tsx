@@ -13,10 +13,16 @@ export const revalidate = 3600
 const AI_KEYWORDS = ['rtx 4090', 'rtx 4080', 'rtx 4070', 'rtx 3090', 'rtx 3080', 'rx 7900', 'rx 6900']
 
 export default async function AIBuildsPage() {
-  // Fetch builds with high-end GPUs suited to local AI inference
-  const results = await Promise.all(
-    AI_KEYWORDS.map(kw => getSFFBuilds({ search: kw, has_benchmarks: true, limit: 6 }))
-  )
+  // Fetch builds with high-end GPUs suited to local AI inference.
+  // Fail gracefully if the API is unreachable during CI build.
+  let results: Awaited<ReturnType<typeof getSFFBuilds>>[] = []
+  try {
+    results = await Promise.all(
+      AI_KEYWORDS.map(kw => getSFFBuilds({ search: kw, has_benchmarks: true, limit: 6 }))
+    )
+  } catch {
+    results = []
+  }
 
   // Deduplicate by build id, keep order of first appearance
   const seen = new Set<number>()

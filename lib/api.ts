@@ -9,10 +9,15 @@ const API_BASE =
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const url = `${API_BASE}${path}`
-  const res = await fetch(url, {
-    ...init,
-    headers: { Accept: 'application/json', ...init?.headers },
-  })
+  let res: Response
+  try {
+    res = await fetch(url, {
+      ...init,
+      headers: { Accept: 'application/json', ...init?.headers },
+    })
+  } catch (e) {
+    throw new Error(`API fetch failed (network error): ${path} — ${e}`)
+  }
   if (!res.ok) throw new Error(`API error ${res.status}: ${path}`)
   return res.json() as Promise<T>
 }
