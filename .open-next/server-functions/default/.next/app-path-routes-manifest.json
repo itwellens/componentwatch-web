@@ -3,11 +3,11 @@
   "/favicon.ico/route": "/favicon.ico",
   "/sign-in/[[...sign-in]]/page": "/sign-in/[[...sign-in]]",
   "/ai-builds/page": "/ai-builds",
-  "/cases/page": "/cases",
-  "/builds/page": "/builds",
   "/cases/[slug]/page": "/cases/[slug]",
-  "/page": "/",
-  "/compare/page": "/compare",
+  "/builds/page": "/builds",
+  "/builds/[id]/page": "/builds/[id]",
+  "/cases/page": "/cases",
   "/submit/page": "/submit",
-  "/builds/[id]/page": "/builds/[id]"
+  "/page": "/",
+  "/compare/page": "/compare"
 }

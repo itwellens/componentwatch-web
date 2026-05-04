@@ -113,6 +113,41 @@ export interface BuildDetail {
   prices: Prices
 }
 
+export interface PCProductSummary {
+  id: number
+  canonical_name: string
+  brand: string | null
+  category: string
+  image_url: string | null
+  specs: Record<string, unknown> | null
+  best_price: number | null
+  best_retailer: string | null
+  retailer_count: number
+}
+
+export interface PCListing {
+  listing_id: number
+  retailer_slug: string
+  retailer_name: string
+  price: number | null
+  in_stock: boolean | null
+  stock_text: string | null
+  listing_url: string
+  polled_at: string | null
+}
+
+export interface PCProductDetail {
+  product: {
+    id: number
+    canonical_name: string
+    brand: string | null
+    category: string
+    image_url: string | null
+    specs: Record<string, unknown> | null
+  }
+  listings: PCListing[]
+}
+
 // ---------------------------------------------------------------------------
 // API calls
 // ---------------------------------------------------------------------------
@@ -177,4 +212,18 @@ export async function getSiteStats(): Promise<{
   } catch {
     return { builds: 235, cases: 228, benchmarks: 2426 }
   }
+}
+
+export async function searchPCProducts(
+  q: string,
+  category?: string,
+  limit = 24,
+): Promise<{ query: string; results: PCProductSummary[]; count: number }> {
+  const qs = new URLSearchParams({ q, limit: String(limit) })
+  if (category) qs.set('category', category)
+  return apiFetch(`/api/pc/search?${qs}`, { next: { revalidate: 60 } })
+}
+
+export async function getPCProduct(id: number): Promise<PCProductDetail> {
+  return apiFetch(`/api/pc/products/${id}`, { next: { revalidate: 60 } })
 }
