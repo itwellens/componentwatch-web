@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import BuildCard from '@/components/BuildCard'
-import { getSFFBuilds, getSFFCases } from '@/lib/api'
+import { getSFFBuilds, getSFFCases, type BuildSummary, type SFFCase } from '@/lib/api'
 
 export const metadata: Metadata = {
   title: 'SFF Build Library',
@@ -21,10 +21,22 @@ export default async function BuildsPage({ searchParams }: Props) {
   const caseId    = params.case_id ? parseInt(params.case_id) : undefined
   const benchOnly = params.benchmarks === 'true'
 
-  const [{ builds, total }, cases] = await Promise.all([
-    getSFFBuilds({ search, case_id: caseId, has_benchmarks: benchOnly || undefined, limit: 30 }),
-    getSFFCases(),
-  ])
+  let builds: BuildSummary[] = []
+  let total = 0
+  let cases: SFFCase[] = []
+  let apiDown = false
+
+  try {
+    const [buildsData, casesData] = await Promise.all([
+      getSFFBuilds({ search, case_id: caseId, has_benchmarks: benchOnly || undefined, limit: 30 }),
+      getSFFCases(),
+    ])
+    builds = buildsData.builds
+    total  = buildsData.total
+    cases  = casesData
+  } catch {
+    apiDown = true
+  }
 
   const selectedCase = caseId ? cases.find(c => c.id === caseId) : null
 
@@ -111,6 +123,12 @@ export default async function BuildsPage({ searchParams }: Props) {
 
         {/* Build grid */}
         <div>
+          {apiDown && (
+            <div className="mb-6 rounded-xl border border-sff-amber/30 bg-sff-amber/5 px-4 py-3 text-sm text-sff-amber">
+              API unreachable — build data temporarily unavailable.
+            </div>
+          )}
+
           {selectedCase && (
             <div className="mb-5 flex items-center gap-3">
               <span className="text-sm text-ink-muted">Filtering by:</span>
