@@ -218,8 +218,9 @@ export async function searchPCProducts(
   q: string,
   category?: string,
   limit = 24,
+  sort_by = 'relevance',
 ): Promise<{ query: string; results: PCProductSummary[]; count: number }> {
-  const qs = new URLSearchParams({ q, limit: String(limit) })
+  const qs = new URLSearchParams({ q, limit: String(limit), sort_by })
   if (category) qs.set('category', category)
   return apiFetch(`/api/pc/search?${qs}`, { next: { revalidate: 60 } })
 }

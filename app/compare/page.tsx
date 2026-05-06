@@ -23,12 +23,37 @@ const CATEGORY_LABELS: Record<string, string> = {
   monitor: 'Monitor', keyboard: 'Keyboard', mouse: 'Mouse', other: 'Other',
 }
 
+// Sort options per category
+const SORT_OPTIONS: Record<string, { value: string; label: string }[]> = {
+  gpu: [
+    { value: 'relevance',  label: 'Best match'          },
+    { value: 'price_asc',  label: 'Price: low to high'  },
+    { value: 'price_desc', label: 'Price: high to low'  },
+    { value: 'vram_desc',  label: 'VRAM: most first'    },
+    { value: 'name_asc',   label: 'Name: A–Z'           },
+  ],
+  cpu: [
+    { value: 'relevance',  label: 'Best match'          },
+    { value: 'price_asc',  label: 'Price: low to high'  },
+    { value: 'price_desc', label: 'Price: high to low'  },
+    { value: 'cores_desc', label: 'Cores: most first'   },
+    { value: 'tdp_asc',    label: 'TDP: lowest first'   },
+    { value: 'name_asc',   label: 'Name: A–Z'           },
+  ],
+}
+const DEFAULT_SORT_OPTIONS = [
+  { value: 'relevance',  label: 'Best match'         },
+  { value: 'price_asc',  label: 'Price: low to high' },
+  { value: 'price_desc', label: 'Price: high to low' },
+  { value: 'name_asc',   label: 'Name: A–Z'          },
+]
+
 interface Props {
-  searchParams: Promise<{ q?: string; category?: string; id?: string }>
+  searchParams: Promise<{ q?: string; category?: string; id?: string; sort?: string }>
 }
 
 // ── Shared search bar ──────────────────────────────────────────────────────
-function SearchBar({ q, category }: { q: string; category?: string }) {
+function SearchBar({ q, category, sort }: { q: string; category?: string; sort: string }) {
   return (
     <form method="GET" action="/compare">
       <div className="flex gap-3">
@@ -40,6 +65,7 @@ function SearchBar({ q, category }: { q: string; category?: string }) {
           className="flex-1 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-colors"
         />
         {category && <input type="hidden" name="category" value={category} />}
+        {sort !== 'relevance' && <input type="hidden" name="sort" value={sort} />}
         <button
           type="submit"
           className="shrink-0 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-accent-hover transition-colors"
@@ -48,6 +74,30 @@ function SearchBar({ q, category }: { q: string; category?: string }) {
         </button>
       </div>
     </form>
+  )
+}
+
+// ── Sort bar ───────────────────────────────────────────────────────────────
+function SortBar({ q, category, sort }: { q: string; category?: string; sort: string }) {
+  const options = (category ? SORT_OPTIONS[category] : null) ?? DEFAULT_SORT_OPTIONS
+  const base    = `/compare?${q ? `q=${encodeURIComponent(q)}&` : ''}${category ? `category=${category}&` : ''}`
+  return (
+    <div className="flex items-center gap-2 flex-wrap">
+      <span className="text-[10px] font-semibold uppercase tracking-widest text-ink-faint">Sort</span>
+      {options.map(opt => (
+        <Link
+          key={opt.value}
+          href={`${base}sort=${opt.value}`}
+          className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+            sort === opt.value
+              ? 'bg-accent/10 border-accent/30 text-accent'
+              : 'border-line text-ink-muted hover:text-ink hover:bg-surface'
+          }`}
+        >
+          {opt.label}
+        </Link>
+      ))}
+    </div>
   )
 }
 
@@ -211,10 +261,10 @@ async function ProductDetail({ id, q }: { id: number; q: string }) {
 }
 
 // ── Search results ─────────────────────────────────────────────────────────
-async function SearchResults({ q, category }: { q: string; category?: string }) {
+async function SearchResults({ q, category, sort }: { q: string; category?: string; sort: string }) {
   let data: Awaited<ReturnType<typeof searchPCProducts>> = { query: q, results: [], count: 0 }
   try {
-    data = await searchPCProducts(q, category, 24)
+    data = await searchPCProducts(q, category, 24, sort)
   } catch { /* API down — show empty */ }
 
   if (data.results.length === 0) {
@@ -285,6 +335,7 @@ export default async function ComparePage({ searchParams }: Props) {
   const params   = await searchParams
   const q        = params.q        ?? ''
   const category = params.category
+  const sort     = params.sort     ?? 'relevance'
   const id       = params.id ? parseInt(params.id) : null
 
   return (
@@ -297,19 +348,24 @@ export default async function ComparePage({ searchParams }: Props) {
       </div>
 
       <div className="mb-6">
-        <SearchBar q={q} category={category} />
+        <SearchBar q={q} category={category} sort={sort} />
       </div>
 
       {!id && (
-        <div className="mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
           <CategoryPills q={q} active={category} />
+          {(q || category) && (
+            <div className="sm:ml-auto shrink-0">
+              <SortBar q={q} category={category} sort={sort} />
+            </div>
+          )}
         </div>
       )}
 
       {id ? (
         <ProductDetail id={id} q={q} />
       ) : (q || category) ? (
-        <SearchResults q={q} category={category} />
+        <SearchResults q={q} category={category} sort={sort} />
       ) : (
         /* Empty state */
         <div className="rounded-2xl border border-dashed border-line p-16 text-center">
